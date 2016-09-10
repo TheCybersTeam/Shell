@@ -1,2 +1,0 @@
-# Shell
-The Cybers Shell
