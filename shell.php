@@ -22,9 +22,10 @@
 <?php
 /*
 	By: The Cybers Team
-	Versão: Beta 0.2
+	Versão: Beta 0.3
 	[ok] listar
 	[ok] download
+	[ok] editar
 */
 	// Funções =======================================================
 
