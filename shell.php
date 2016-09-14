@@ -1,6 +1,6 @@
 <?php
-
-// pwx-offset-ghostdork
+	
+	// Coded by: Offset & PWX
 
 	session_start();
 	$senha = "123";
