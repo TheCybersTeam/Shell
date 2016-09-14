@@ -280,6 +280,15 @@ echo "
 			Os: ";echo php_uname('n');echo"<br />
 			Ip: $_SERVER[REMOTE_ADDR]<br />
 			Host: $_SERVER[HTTP_HOST]<br />
+			";$Dia = date(d);echo"
+			";$Mes = date(m);echo"
+			";$Ano = date(Y);echo"
+			";echo "Data: ".$Dia."/".$Mes."/".$Ano;echo"<br />
+			";$Hora = date(H);echo"
+			";$Minuto = date(i);echo"
+			";$Segundo = date(s);echo"
+			";echo "Hora: ".$Hora.":".$Minuto.":".$Segundo;echo"<br />
+
 			</small>
 		</div>
 	</div>
@@ -299,6 +308,14 @@ echo "
 			Os: ";echo php_uname('n');echo"<br />
 			Ip: $_SERVER[REMOTE_ADDR]<br />
 			Host: $_SERVER[HTTP_HOST]<br />
+			";$Dia = date(d);echo"
+			";$Mes = date(m);echo"
+			";$Ano = date(Y);echo"
+			";echo "Data: ".$Dia."/".$Mes."/".$Ano;echo"<br />
+			";$Hora = date(H);echo"
+			";$Minuto = date(i);echo"
+			";$Segundo = date(s);echo"
+			";echo "Hora: ".$Hora.":".$Minuto.":".$Segundo;echo"<br />
 			</small>
 		</div>
 	</div>
@@ -748,9 +765,11 @@ function whois(){
 	</form>
 	";
 	$whoisdomain = $_POST['domainname'];
+	$domainname = $whoisdomain."\r\n";
 	$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+	socket_getpeername($socket, $whoisdomain);
 	socket_connect($socket, '200.160.2.3', 43);
-	socket_write($socket, $whoisdomain."\r\n");
+	socket_write($socket, $domainname, strlen($domainname));
 	$result  = socket_read($socket, 1024);
 	echo $result;
 	socket_close($socket);
